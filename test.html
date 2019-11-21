@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <input type="text" placeholder="Name of Player" id="query">
+    <button id="button">Click</button>
+    <div id="result">
+    </div>
+   
+</body>
+<script>
+    $("#button").click(
+       
+        () => {
+            var q = $("#query").val();
+            var url = `https://allsportsapi.com/api/football/?met=Players&playerName=${q}&APIkey=0c2d9932c80cfa9440d5da27b5c0efb3fd7607eef303a1a0e3cf390cf262b89e`;
+            var result;
+            $.ajax(url).done(function (response) {
+            console.log(response);
+           
+            for(let i =0 ; i < response.result.length;i++){
+                $("#result").append(
+            `<p> Name: ${response.result[i].player_name} <br></p>
+             <p>   Jersy Number = ${response.result[i].player_number} </p>
+            <br>
+                Team :  ${response.result[i].player_country}
+                <br>
+                <button onclick="details(${response.result[i].team_key})" >Team Details</button>
+                `
+            )
+            }
+        }
+        
+    )});
+  function details(key){
+    url = `https://allsportsapi.com/api/football/?met=Teams&teamId=${key}&APIkey=0c2d9932c80cfa9440d5da27b5c0efb3fd7607eef303a1a0e3cf390cf262b89e`;
+    $.ajax(url).done(function (response) {
+            console.log(response);
+            for(let i =0 ; i < response.result.length;i++){
+                $("#result").append(
+            `<p>    Team Name:${response.result[i].team_name}
+                     </p>
+                <br>
+            <button onclick="hello(${response.result[i].player_name})" >Team Details</button>
+                `
+            )
+            }
+           
+        })
+    }
+  
+</script>
+
+</html>
